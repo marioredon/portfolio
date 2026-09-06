@@ -511,13 +511,6 @@ body {
   color: var(--color-text);
 }
 
-/* Below 900px the brand link reads "Home" instead of the full name — a
-   clearer nav affordance at that size. Swapped with a sibling span instead
-   of JS so the accessible name always matches what's on screen. */
-.site-header__brand-mobile {
-  display: none;
-}
-
 .site-header__contact {
   display: inline-flex;
   align-items: center;
@@ -895,14 +888,6 @@ body {
 
   .site-header__row {
     padding: var(--space-8) var(--space-24);
-  }
-
-  .site-header__brand-full {
-    display: none;
-  }
-
-  .site-header__brand-mobile {
-    display: inline;
   }
 
   .site-footer__list {
