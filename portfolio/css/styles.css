@@ -511,6 +511,13 @@ body {
   color: var(--color-text);
 }
 
+/* Below 900px the brand link reads "Home" instead of the full name — a
+   clearer nav affordance at that size. Swapped with a sibling span instead
+   of JS so the accessible name always matches what's on screen. */
+.site-header__brand-mobile {
+  display: none;
+}
+
 .site-header__contact {
   display: inline-flex;
   align-items: center;
@@ -890,6 +897,14 @@ body {
     padding: var(--space-8) var(--space-24);
   }
 
+  .site-header__brand-full {
+    display: none;
+  }
+
+  .site-header__brand-mobile {
+    display: inline;
+  }
+
   .site-footer__list {
     padding: var(--space-24);
   }
@@ -897,6 +912,14 @@ body {
   .home-hero__inner {
     gap: var(--space-56);
     padding: var(--space-56) var(--space-24) var(--space-40);
+  }
+
+  .home-hero__name {
+    /* Stack Mario / photo / Redondo instead of wrapping the photo onto
+       whichever line happens to run out of width. */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
   }
 
   .home-hero__photo {
@@ -930,6 +953,12 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-8);
+  }
+
+  .home-timeline__date {
+    /* The 96px flex-basis above is a fixed *width* for the row layout;
+       in the column layout here it would be read as a fixed height. */
+    flex: 0 0 auto;
   }
 
   .home-timeline__role-company {
