@@ -91,6 +91,7 @@
   --space-40: 40px;
   --space-48: 48px;
   --space-56: 56px;
+  --space-80: 80px;
   --space-96: 96px;
   --space-104: 104px;
 
@@ -261,6 +262,9 @@ body {
 }
 
 .project-intro__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
   font-size: var(--fs-intro);
   font-weight: 300;
   color: var(--color-text-soft);
@@ -555,7 +559,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-56);
-  padding: var(--space-96) var(--space-48);
+  /* Bottom padding a step under the top one — less air between the
+     role/about/year row and the edge than above the "Hello! I'm" block. */
+  padding: var(--space-96) var(--space-48) var(--space-80);
 }
 
 .home-hero__intro {
@@ -852,7 +858,7 @@ body {
 
   .home-hero__inner {
     gap: var(--space-56);
-    padding: var(--space-56) var(--space-24);
+    padding: var(--space-56) var(--space-24) var(--space-40);
   }
 
   .home-hero__photo {
