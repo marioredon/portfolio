@@ -1,0 +1,898 @@
+/* ==========================================================================
+   Fonts — self-hosted, single-weight display + two-weight body.
+   Values extracted from Figma (node 90:284). See project notes for the
+   handful of values that were assumptions rather than direct extractions.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Formula Condensed";
+  src: url("../fonts/FormulaCondensed-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+
+:root {
+  /* Colour — from Figma */
+  --color-bg: #070201;
+  --color-text: #f7e5ff;
+  --color-text-soft: #fcf5ff;
+  --color-white: #ffffff;
+  --color-border: #625866;
+  --color-border-soft: rgba(247, 229, 255, 0.3);
+  --color-media-placeholder: #241c29;
+
+  /* Light-mode colours — home page modules 1 & 2 only */
+  --color-bg-light: #e0e8eb;
+  --color-text-dark: #2b2b2b;
+  /* Figma gives #737373 here; darkened to pass 4.5:1 at 16px (see notes) */
+  --color-text-muted-light: #666666;
+
+  /* Type families — always referenced through these two variables */
+  --font-display: "Formula Condensed", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Tight tracking used throughout the Inter headings on the home page */
+  --ls-tight: -0.05em;
+  --ls-snug: -0.03em;
+
+  /* Type scale — from Figma, made fluid for the display sizes (see notes) */
+  --fs-hero-title: clamp(3.5rem, 21vw, 19rem);   /* 304px at desktop */
+  --fs-more-title: clamp(3rem, 20vw, 18rem);     /* 288px at desktop */
+  --fs-subtitle: 1.125rem;                       /* 18px */
+  --fs-tag: 1rem;                                /* 16px */
+  --fs-tag-sm: 0.75rem;                          /* 12px */
+  --fs-intro: 1.5rem;                            /* 24px */
+  --fs-meta: 1.25rem;                            /* 20px */
+  --fs-project-number: 1rem;                     /* 16px */
+  --fs-project-name: 2.5rem;                     /* 40px */
+  --fs-ratio-label: 0.75rem;                     /* 12px */
+  --fs-home-greeting: clamp(1.5rem, 3vw, 2rem);  /* 32px at desktop */
+  --fs-home-name: clamp(2.75rem, 10vw, 8.4875rem); /* 135.8px at desktop */
+  --fs-home-title: clamp(2.5rem, 6vw, 6.5rem);   /* 104px at desktop */
+  --fs-selected-title: clamp(2.5rem, 14vw, 13rem); /* 208px at desktop, fits "Selected Works" on one line */
+
+  --lh-display: 0.95;
+  --lh-base: 1.5;
+
+  /* Spacing — 8px scale, from Figma */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-96: 96px;
+  --space-104: 104px;
+
+  --radius-pill: 9999px;
+
+  --col-intro-width: 480px;
+
+  /* Real height of .site-header at this breakpoint — used so sticky
+     elements below it (e.g. .project-intro) stick under it, not behind it. */
+  --header-height: 77px;
+}
+
+/* ==========================================================================
+   Reset — minimal
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Full-height home sections pull scroll toward themselves instead of
+     landing at an arbitrary point mid-section. proximity (not mandatory)
+     on purpose: mandatory measurably trapped scroll before reaching the
+     footer, since nothing after the last snap point is itself a snap
+     target — confirmed live, not just in theory. Harmless on the project
+     pages: nothing there sets scroll-snap-align, so this has no effect. */
+  scroll-snap-type: y proximity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
+body,
+h1,
+h2,
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 4px;
+}
+
+.text-link:hover,
+.text-link:focus-visible {
+  text-decoration: underline;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: var(--lh-base);
+}
+
+/* ==========================================================================
+   Project page
+   ========================================================================== */
+
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-56);
+  padding: var(--space-56) var(--space-32) var(--space-104);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* --- Hero --------------------------------------------------------------- */
+
+.project-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-24);
+  text-align: center;
+}
+
+.project-hero__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-hero-title);
+  line-height: var(--lh-display);
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.project-hero__subtitle {
+  font-size: var(--fs-subtitle);
+  color: var(--color-text);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-8) var(--space-16) 10px;
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-tag);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.project-hero .tag {
+  min-width: 56px;
+  justify-content: center;
+}
+
+.tag--sm {
+  padding: 6px var(--space-16) 8px;
+  font-size: var(--fs-tag-sm);
+}
+
+/* --- Body: two columns --------------------------------------------------- */
+
+.project-columns {
+  display: grid;
+  grid-template-columns: var(--col-intro-width) minmax(0, 1fr);
+  gap: var(--space-32);
+  align-items: start;
+}
+
+.project-intro {
+  position: sticky;
+  top: var(--header-height);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+  padding-top: var(--space-16);
+}
+
+.project-intro__text {
+  font-size: var(--fs-intro);
+  font-weight: 300;
+  color: var(--color-text-soft);
+}
+
+.project-meta {
+  border-top: 1px solid var(--color-border-soft);
+  font-size: var(--fs-meta);
+}
+
+.project-meta__row {
+  display: flex;
+  gap: var(--space-16);
+  padding: var(--space-16) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-meta__row:last-child {
+  border-bottom: none;
+}
+
+.project-meta__row dt {
+  flex: 0 0 80px;
+  font-weight: 600;
+}
+
+.project-meta__row dd {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.project-media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+.project-media__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-32);
+}
+
+.media-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--color-media-placeholder);
+  color: var(--color-text);
+  font-size: var(--fs-ratio-label);
+  font-family: var(--font-body);
+}
+
+.project-media__primary {
+  aspect-ratio: 9 / 16;
+}
+
+.project-media__secondary-a {
+  aspect-ratio: 4 / 5;
+}
+
+.project-media__secondary-b {
+  aspect-ratio: 4 / 5;
+}
+
+.project-media__primary img,
+.project-media__secondary-a img,
+.project-media__secondary-b img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Phone mockup — CSS-only device frame for app screenshots ------------- */
+
+.phone-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-32);
+}
+
+.phone-mockup {
+  position: relative;
+  aspect-ratio: 9 / 19.5;
+  background: #050505;
+  border-radius: 2.5rem;
+  padding: 12px;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.phone-mockup__notch {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 26px;
+  background: #050505;
+  border-radius: var(--radius-pill);
+  z-index: 1;
+}
+
+.phone-mockup__screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.75rem;
+  overflow: hidden;
+}
+
+.phone-mockup__screen.media-placeholder {
+  font-size: var(--fs-ratio-label);
+}
+
+.phone-mockup__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- More projects -------------------------------------------------------- */
+
+.more-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-32);
+  padding-top: var(--space-96);
+  text-align: center;
+}
+
+.more-projects__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-more-title);
+  line-height: var(--lh-display);
+  color: var(--color-text);
+}
+
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-56);
+  width: 100%;
+  text-align: left;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  transition: background-color 0.15s ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  background: rgba(247, 229, 255, 0.06);
+}
+
+.project-card__name-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+}
+
+.project-card__number {
+  flex: 0 0 24px;
+  font-size: var(--fs-project-number);
+  text-align: center;
+  color: var(--color-text);
+}
+
+.project-card__name {
+  font-size: var(--fs-project-name);
+  color: var(--color-white);
+}
+
+.project-card__tags {
+  /* Number (24px) + name-row gap (8px): lines the tags up under the
+     first letter of the name above them. */
+  padding-left: 32px;
+  /* .tag-row centers its pills by default; these need to start flush
+     after the padding instead. */
+  justify-content: flex-start;
+}
+
+/* ==========================================================================
+   Site header & footer — shared across every page
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-32);
+}
+
+.site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--fs-tag);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.site-header__contact {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--fs-tag);
+  color: var(--color-text-soft);
+  user-select: all;
+  cursor: text;
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+}
+
+.site-footer__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-16) var(--space-24);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--space-24) var(--space-32);
+  font-size: var(--fs-tag-sm);
+  color: var(--color-text-soft);
+}
+
+.site-footer__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.site-footer__list li:last-child {
+  margin-left: auto;
+}
+
+/* Used when the section right above the footer is light — home page only,
+   since it ends on "Where I've worked". Work pages end on the dark "More
+   Projects" module, so their footer stays the default dark styling. */
+.site-footer--light {
+  background: var(--color-bg-light);
+  border-top-color: rgba(43, 43, 43, 0.15);
+}
+
+.site-footer--light .site-footer__list {
+  color: var(--color-text-muted-light);
+}
+
+.site-footer__email {
+  user-select: all;
+  cursor: text;
+}
+
+/* ==========================================================================
+   Home page — three full-bleed modules (light, light, dark) + shared footer
+   ========================================================================== */
+
+/* --- Module 1: hero ------------------------------------------------------- */
+
+.home-hero {
+  min-height: 100vh;
+  display: flex;
+  scroll-snap-align: start;
+  background: var(--color-bg-light);
+}
+
+.home-hero__inner {
+  flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-56);
+  padding: var(--space-96) var(--space-48);
+}
+
+.home-hero__intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* Hug its own content (the "Mario [photo] Redondo" line is the widest
+     part) and center that block as a unit — "Hello! I'm" stays flush
+     with where the name starts, but the whole group sits mid-layout. */
+  align-self: center;
+}
+
+.home-hero__greeting {
+  font-weight: 600;
+  font-size: var(--fs-home-greeting);
+  line-height: 1.2;
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-dark);
+}
+
+.home-hero__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.17em;
+  width: 100%;
+  font-weight: 600;
+  font-size: var(--fs-home-name);
+  line-height: 1.2;
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-dark);
+}
+
+.home-hero__photo {
+  /* Fixed to the 8px scale (Figma's 119x99 crop rounded to it) instead of
+     scaling with the fluid name text. */
+  position: relative;
+  display: inline-block;
+  width: 120px;
+  height: 96px;
+  overflow: hidden;
+  background: var(--color-media-placeholder);
+}
+
+.home-hero__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  /* 2 images * 0.5s each = 1s full cycle. Adding more images means
+     recalculating this duration and each nth-child's delay below. */
+  animation: home-hero-photo-cycle 1s infinite;
+}
+
+.home-hero__photo img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.home-hero__photo img:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+@keyframes home-hero-photo-cycle {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__photo img {
+    animation: none;
+    opacity: 0;
+  }
+
+  .home-hero__photo img:first-child {
+    opacity: 1;
+  }
+}
+
+.home-hero__meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+  width: 100%;
+  color: var(--color-text-dark);
+}
+
+.home-hero__role,
+.home-hero__year {
+  flex: 1 0 0;
+  font-weight: 600;
+  font-size: var(--fs-tag);
+  letter-spacing: var(--ls-tight);
+}
+
+.home-hero__year {
+  text-align: right;
+}
+
+.home-hero__about {
+  flex: 0 0 452px;
+  max-width: 100%;
+  font-size: 0.875rem;
+  line-height: 16px;
+}
+
+/* --- Module 2: experience timeline ----------------------------------------- */
+
+.home-experience {
+  min-height: 100vh;
+  display: flex;
+  /* No scroll-snap-align here on purpose: it's the last section before the
+     footer, and being a mandatory snap point with nothing to snap to past
+     it was trapping the scroll, making the footer unreachable. */
+  background: var(--color-bg-light);
+}
+
+.home-experience__inner {
+  flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  gap: var(--space-56);
+  align-items: center;
+  padding: var(--space-56) var(--space-48);
+}
+
+.home-experience__title {
+  flex: 1 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-home-title);
+  line-height: var(--lh-display);
+  color: var(--color-text-dark);
+}
+
+.home-timeline {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-40);
+}
+
+.home-timeline__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.home-timeline__heading {
+  display: flex;
+  gap: var(--space-24);
+  align-items: center;
+}
+
+.home-timeline__date {
+  /* Fixed width so every row's company line indents to the same spot
+     (date width + heading gap) below the role title, not the date. */
+  flex: 0 0 96px;
+  font-size: var(--fs-tag);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-text-muted-light);
+  white-space: nowrap;
+}
+
+.home-timeline__role-title {
+  flex: 1 0 0;
+  font-weight: 600;
+  font-size: var(--fs-intro);
+  letter-spacing: var(--ls-snug);
+  color: var(--color-text-dark);
+}
+
+.home-timeline__role-company {
+  padding-left: 120px;
+  font-size: var(--fs-intro);
+  letter-spacing: var(--ls-snug);
+  color: var(--color-text-muted-light);
+}
+
+/* --- Module 3: selected work (dark) ---------------------------------------- */
+
+.home-selected-work {
+  scroll-snap-align: start;
+  background: var(--color-bg);
+}
+
+.home-selected-work__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--space-104) var(--space-48);
+}
+
+.selected-work {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+.selected-work__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-selected-title);
+  line-height: var(--lh-display);
+  color: var(--color-text);
+}
+
+.work-list {
+  grid-template-columns: 1fr;
+  --fs-project-name: clamp(2.5rem, 5vw, 4rem);
+}
+
+.work-list .project-card {
+  padding: var(--space-24) 0;
+}
+
+.work-list li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.work-list .tag {
+  font-size: var(--fs-tag);
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive — single breakpoint at 900px
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: 61px;
+  }
+
+  .project-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .project-intro {
+    position: static;
+  }
+
+  .project-media__row {
+    grid-template-columns: 1fr;
+  }
+
+  .phone-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-48);
+  }
+
+  .project-card__tags {
+    padding-left: 0;
+  }
+
+  .site-header__row {
+    padding: var(--space-8) var(--space-24);
+  }
+
+  .site-footer__list {
+    padding: var(--space-24);
+  }
+
+  .home-hero__inner {
+    gap: var(--space-56);
+    padding: var(--space-56) var(--space-24);
+  }
+
+  .home-hero__photo {
+    /* At the fluid name size used below 900px, 120x96 no longer fits
+       inline without wrapping "Mario [box] Redondo" apart — still base-8. */
+    width: 80px;
+    height: 64px;
+  }
+
+  .home-hero__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  .home-hero__about {
+    flex-basis: auto;
+  }
+
+  .home-hero__year {
+    text-align: left;
+  }
+
+  .home-experience__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-56) var(--space-24);
+  }
+
+  .home-timeline__heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  .home-timeline__role-company {
+    padding-left: 0;
+  }
+
+  .home-selected-work__inner {
+    padding: var(--space-56) var(--space-24);
+  }
+}
