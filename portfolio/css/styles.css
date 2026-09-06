@@ -75,8 +75,8 @@
   --fs-project-number: 1rem;                     /* 16px */
   --fs-project-name: 2.5rem;                     /* 40px */
   --fs-ratio-label: 0.75rem;                     /* 12px */
-  --fs-home-greeting: clamp(1.5rem, 3vw, 2rem);  /* 32px at desktop */
-  --fs-home-name: clamp(2.75rem, 10vw, 8.4875rem); /* 135.8px at desktop */
+  --fs-home-greeting: clamp(1.75rem, 3vw, 2rem); /* 32px at desktop */
+  --fs-home-name: clamp(3rem, 10vw, 8.4875rem);  /* 135.8px at desktop */
   --fs-home-title: clamp(2.5rem, 6vw, 6.5rem);   /* 104px at desktop */
   --fs-selected-title: clamp(2.5rem, 14vw, 13rem); /* 208px at desktop, fits "Selected Works" on one line */
 
@@ -897,6 +897,12 @@ body {
   .home-hero__inner {
     gap: var(--space-56);
     padding: var(--space-56) var(--space-24) var(--space-40);
+  }
+
+  .home-hero__intro {
+    /* Below 900px there's no spare width to "center as a unit" — align
+       left with the rest of the page's text instead. */
+    align-self: flex-start;
   }
 
   .home-hero__name {
